@@ -1,6 +1,10 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { clearCurrentServerThunk, getAllServersThunk, setCurrentServerThunk } from "../../redux/servers";
+import {
+  clearCurrentServerThunk,
+  getAllServersThunk,
+  setCurrentServerThunk,
+} from "../../redux/servers";
 import {
   clearChannelsThunk,
   getAllChannelsThunk,
@@ -11,24 +15,27 @@ import ServersList from "../Servers/Servers";
 import ChannelsList from "../Channels/";
 import MessagesList from "../Messages/";
 import styles from "./Main.module.css";
-import { clearCurrentMessagesThunk, getAllMessagesThunk } from "../../redux/messages";
+import {
+  clearCurrentMessagesThunk,
+  getAllMessagesThunk,
+} from "../../redux/messages";
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../Auth/LoginFormModal";
 import SignupFormModal from "../Auth/SignupFormModal";
-
-
+import { io } from "socket.io-client";
+let socket
 function MainComponent() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.session.user);
 
-
   useEffect(() => {
     if (user) {
       loadDefault();
+      socket = io("http://127.0.0.1:8000")
     } else {
-      clearCurrentServerThunk()
-      clearChannelsThunk()
-      clearCurrentMessagesThunk()
+      clearCurrentServerThunk();
+      clearChannelsThunk();
+      clearCurrentMessagesThunk();
     }
   }, [user]);
 
@@ -50,7 +57,7 @@ function MainComponent() {
           <main className={styles.page}>
             <ServersList />
             <ChannelsList />
-            <MessagesList />
+            <MessagesList socket={socket} />
           </main>
         </>
       ) : (

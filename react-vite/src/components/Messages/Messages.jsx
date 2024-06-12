@@ -15,13 +15,13 @@ import DeleteMessage from "./DeleteMessageModal/";
 import { HiOutlineDocumentText } from "react-icons/hi2";
 import { HiOutlineTrash } from "react-icons/hi2";
 import { VscReactions } from "react-icons/vsc";
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 
-let socket;
-const SOCKET_URL =
-  process.env.NODE_ENV === "production" ? null : "http://127.0.0.1:8000";
+// let socket;
+// const SOCKET_URL =
+//   process.env.NODE_ENV === "production" ? null : "http://127.0.0.1:8000";
 
-function MessagesList() {
+function MessagesList({socket}) {
   const dispatch = useDispatch();
   const messages = useSelector(getMessagesArray);
   const currChannel = useSelector((state) => state.channel.current);
@@ -35,13 +35,15 @@ function MessagesList() {
   const [showReactions, setShowReactions] = useState(null);
   const scroll = useRef(null);
 
-  useEffect(() => {
-    dispatch(thunkGetAll());
-    socket = io(SOCKET_URL);
-    socket.on("message", (message) => {
-      dispatch(getAllMessagesThunk(message.message["channel_id"]));
-    });
-  }, []);
+  // useEffect(() => {
+  //   dispatch(thunkGetAll());
+  //   socket = io(SOCKET_URL);
+  //   socket.on("message", (message) => {
+  //     dispatch(getAllMessagesThunk(message.message["channel_id"]));
+  //   });
+  // }, []);
+
+  useEffect(()=>)
 
   useEffect(() => {
     socket.emit("leave", { room: lastChannel?.id });
